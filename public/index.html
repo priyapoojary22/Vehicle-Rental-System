@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Veloce | Vehicle Rental Database System</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-logo">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M18.5 10H5.5C4.12 10 3 11.12 3 12.5V17C3 17.55 3.45 18 4 18H5C5.55 18 6 17.55 6 17V16H18V17C18 17.55 18.45 18 19 18H20C20.55 18 21 17.55 21 17V12.5C21 11.12 19.88 10 18.5 10Z" />
+            <path d="M7 10L9 4H15L17 10" stroke-linejoin="round" />
+            <circle cx="7.5" cy="13.5" r="1.5" fill="currentColor" />
+            <circle cx="16.5" cy="13.5" r="1.5" fill="currentColor" />
+          </svg>
+        </div>
+        <h2>Veloce</h2>
+      </div>
+      <nav class="nav-menu">
+        <a href="#dashboard" class="nav-item active" data-tab="dashboard">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+          <span>Dashboard</span>
+        </a>
+        <a href="#customers" class="nav-item" data-tab="customers">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span>Customers</span>
+        </a>
+        <a href="#vehicles" class="nav-item" data-tab="vehicles">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 1 13v3c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>
+          <span>Vehicles</span>
+        </a>
+        <a href="#bookings" class="nav-item" data-tab="bookings">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <span>Bookings</span>
+        </a>
+        <a href="#rentals" class="nav-item" data-tab="rentals">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          <span>Rentals</span>
+        </a>
+        <a href="#payments" class="nav-item" data-tab="payments">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          <span>Payments</span>
+        </a>
+        <a href="#maintenance" class="nav-item" data-tab="maintenance">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+          <span>Maintenance</span>
+        </a>
+        <a href="#sql-queries" class="nav-item" data-tab="sql-queries">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v6c0 1.66 4 3 9 3s9-1.34 9-3V5"/><path d="M3 11v6c0 1.66 4 3 9 3s9-1.34 9-3v-6"/></svg>
+          <span>Academic SQL</span>
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <p>Database Project 2026</p>
+        <span class="db-status-tag">SQLite Engine</span>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <!-- Top Bar -->
+      <header class="top-bar">
+        <div class="search-bar">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="global-search" placeholder="Search tables...">
+        </div>
+        <div class="header-actions">
+          <div class="connection-status">
+            <span class="pulse-dot"></span>
+            <span>Local DB Active</span>
+          </div>
+          <button id="clear-db-logs" class="btn btn-secondary btn-sm">Clear DB Logs</button>
+        </div>
+      </header>
+
+      <!-- Tab Contents -->
+      <div class="content-body">
+        
+        <!-- DASHBOARD TAB -->
+        <section id="dashboard" class="tab-content active">
+          <div class="section-header">
+            <div>
+              <h1>Overview Dashboard</h1>
+              <p>Academic Vehicle Rental System metrics.</p>
+            </div>
+            <div class="actions">
+              <button class="btn btn-primary" onclick="openBookingModal()">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;"><path d="M12 5v14M5 12h14"/></svg>
+                New Reservation
+              </button>
+            </div>
+          </div>
+
+          <!-- Stats Grid -->
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon bg-blue">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#2563eb" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+              </div>
+              <div class="stat-info">
+                <h3>Total Customers</h3>
+                <h2 id="stat-customers">-</h2>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon bg-cyan">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#06b6d4" stroke-width="2"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 1 13v3c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>
+              </div>
+              <div class="stat-info">
+                <h3>Total Vehicles</h3>
+                <h2 id="stat-vehicles">-</h2>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon bg-green">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#10b981" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              </div>
+              <div class="stat-info">
+                <h3>Available Vehicles</h3>
+                <h2 id="stat-available-vehicles">-</h2>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon bg-yellow">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#f59e0b" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              </div>
+              <div class="stat-info">
+                <h3>Total Bookings</h3>
+                <h2 id="stat-active-rentals">-</h2>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon bg-purple">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#8b5cf6" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              </div>
+              <div class="stat-info">
+                <h3>Active Rentals</h3>
+                <h2 id="stat-completed-rentals">-</h2>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon bg-emerald">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#059669" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              </div>
+              <div class="stat-info">
+                <h3>Revenue Stream</h3>
+                <h2 id="stat-revenue">₹0</h2>
+              </div>
+            </div>
+          </div>
+
+          <!-- Charts & Quick Lists -->
+          <div class="dashboard-grid">
+            <div class="chart-card">
+              <h3>Monthly Payments Analytics</h3>
+              <div class="chart-container">
+                <canvas id="revenueChart"></canvas>
+              </div>
+            </div>
+            <div class="chart-card">
+              <h3>Fleet Composition by Category</h3>
+              <div class="chart-container">
+                <canvas id="fleetChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- CUSTOMERS TAB -->
+        <section id="customers" class="tab-content">
+          <div class="section-header">
+            <div>
+              <h1>Customer Management</h1>
+              <p>Register, update, and remove customer directory listings.</p>
+            </div>
+            <div class="actions">
+              <button class="btn btn-primary" onclick="openCustomerModal()">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;"><path d="M12 5v14M5 12h14"/></svg>
+                Register Customer
+              </button>
+            </div>
+          </div>
+
+          <div class="table-filters-bar">
+            <div class="search-input-group">
+              <input type="text" id="customer-search-input" placeholder="Search customer name, email, phone...">
+            </div>
+          </div>
+
+          <div class="table-container-card">
+            <div class="table-responsive">
+              <table>
+                <thead>
+                  <tr>
+                    <th class="sortable" onclick="sortTable('customers', 'customer_id')">Customer ID <span class="sort-icon"></span></th>
+                    <th class="sortable" onclick="sortTable('customers', 'CustomerName')">Name <span class="sort-icon"></span></th>
+                    <th>Phone</th>
+                    <th class="sortable" onclick="sortTable('customers', 'email')">Email <span class="sort-icon"></span></th>
+                    <th>License Plate/No</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="customers-table-body">
+                  <!-- Dynamic Content -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- VEHICLES TAB -->
+        <section id="vehicles" class="tab-content">
+          <div class="section-header">
+            <div>
+              <h1>Vehicle Management</h1>
+              <p>Add new vehicles, update vehicle details, and manage availability.</p>
+            </div>
+            <div class="actions">
+              <button class="btn btn-primary" onclick="openVehicleModal()">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;"><path d="M12 5v14M5 12h14"/></svg>
+                Add Vehicle
+              </button>
+            </div>
+          </div>
+
+          <div class="table-filters-bar">
+            <div class="search-input-group">
+              <input type="text" id="vehicle-search-input" placeholder="Search vehicle model, type...">
+            </div>
+            <div class="select-filter-group">
+              <label>Status: </label>
+              <select id="vehicle-status-filter">
+                <option value="All">All Statuses</option>
+                <option value="Available">Available</option>
+                <option value="Rented">Rented</option>
+                <option value="Maintenance">Maintenance</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="table-container-card">
+            <div class="table-responsive">
+              <table>
+                <thead>
+                  <tr>
+                    <th class="sortable" onclick="sortTable('vehicles', 'VehicleID')">Vehicle ID <span class="sort-icon"></span></th>
+                    <th class="sortable" onclick="sortTable('vehicles', 'VehicleModel')">Model <span class="sort-icon"></span></th>
+                    <th class="sortable" onclick="sortTable('vehicles', 'VehicleType')">Type <span class="sort-icon"></span></th>
+                    <th class="sortable" onclick="sortTable('vehicles', 'RentalRate')">Rental Rate <span class="sort-icon"></span></th>
+                    <th>Status</th>
+                    <th>Under Maintenance?</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="vehicles-table-body">
+                  <!-- Dynamic Content -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- BOOKINGS TAB -->
+        <section id="bookings" class="tab-content">
+          <div class="section-header">
+            <div>
+              <h1>Booking Reservations</h1>
+              <p>Manage reservations (triggers trg_prevent_booking and trg_update_vehicle_status).</p>
+            </div>
+            <div class="actions">
+              <button class="btn btn-primary" onclick="openBookingModal()">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;"><path d="M12 5v14M5 12h14"/></svg>
+                Create Booking
+              </button>
+            </div>
+          </div>
+
+          <!-- Trigger Demo Alert Box -->
+          <div class="alert-box info-box trigger-demo-panel">
+            <div class="trigger-header">
+              <span class="trigger-badge">TRIGGER sandbox</span>
+              <h4>Interactive Trigger Demonstration Scenario</h4>
+            </div>
+            <p>1. **trg_update_vehicle_status**: Inserting a booking automatically sets vehicle status to <strong class="rented-text">Rented</strong>.<br>
+            2. **trg_prevent_booking**: Try to create a booking for **Toyota Innova (#103)**. Since its Maintenance Status is **Yes**, the database will raise an error and abort the booking insert.</p>
+          </div>
+
+          <div class="table-container-card">
+            <div class="table-responsive">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Booking ID</th>
+                    <th>Customer Name</th>
+                    <th>Vehicle Model</th>
+                    <th>Rental Rate</th>
+                    <th>Booking Date</th>
+                    <th>Vehicle Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="bookings-table-body">
+                  <!-- Dynamic Content -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- RENTALS TAB -->
+        <section id="rentals" class="tab-content">
+          <div class="section-header">
+            <div>
+              <h1>Rental Management</h1>
+              <p>Track active rental drives and record vehicle returns.</p>
+            </div>
+            <div class="actions">
+              <button class="btn btn-primary" onclick="openRentalModal()">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;"><path d="M12 5v14M5 12h14"/></svg>
+                Create Rental
+              </button>
+            </div>
+          </div>
+
+          <div class="table-container-card">
+            <div class="table-responsive">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Rental ID</th>
+                    <th>Booking ID</th>
+                    <th>Customer Name</th>
+                    <th>Vehicle Model</th>
+                    <th>Daily Rate</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Total Amount</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="rentals-table-body">
+                  <!-- Dynamic Content -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- PAYMENTS TAB -->
+        <section id="payments" class="tab-content">
+          <div class="section-header">
+            <div>
+              <h1>Payment Transactions</h1>
+              <p>Record customer payment transactions.</p>
+            </div>
+            <div class="actions">
+              <button class="btn btn-primary" onclick="openPaymentModal()">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;"><path d="M12 5v14M5 12h14"/></svg>
+                Record Payment
+              </button>
+            </div>
+          </div>
+
+          <div class="table-container-card">
+            <div class="table-responsive">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Payment ID</th>
+                    <th>Rental ID</th>
+                    <th>Customer Name</th>
+                    <th>Vehicle</th>
+                    <th>Amount</th>
+                    <th>Payment Date</th>
+                    <th>Payment Method</th>
+                  </tr>
+                </thead>
+                <tbody id="payments-table-body">
+                  <!-- Dynamic Content -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- MAINTENANCE TAB -->
+        <section id="maintenance" class="tab-content">
+          <div class="section-header">
+            <div>
+              <h1>Maintenance Logs</h1>
+              <p>Track repair schedules and service logs.</p>
+            </div>
+            <div class="actions">
+              <button class="btn btn-primary" onclick="openMaintenanceModal()">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;"><path d="M12 5v14M5 12h14"/></svg>
+                Schedule Maintenance
+              </button>
+            </div>
+          </div>
+
+          <div class="table-container-card">
+            <div class="table-responsive">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Maintenance ID</th>
+                    <th>Vehicle Model</th>
+                    <th>Maintenance Date</th>
+                    <th>Description</th>
+                    <th>Cost</th>
+                  </tr>
+                </thead>
+                <tbody id="maintenance-table-body">
+                  <!-- Dynamic Content -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ACADEMIC SQL TAB (Queries, Procedures, and Triggers Live Console) -->
+        <section id="sql-queries" class="tab-content">
+          <div class="section-header">
+            <div>
+              <h1>Academic SQL Showcase</h1>
+              <p>Inspect database triggers, stored procedures, and the 10 custom queries.</p>
+            </div>
+          </div>
+
+          <!-- Stored Procedure Section -->
+          <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); margin-bottom: 24px;">
+            
+            <!-- SP 1 Form -->
+            <div class="chart-card">
+              <h3>SP 1: CalculateRentalCharge</h3>
+              <p class="description" style="font-size: 0.82rem; margin-bottom: 12px; color: var(--text-secondary);">
+                Fetches a vehicle's rate and computes total rental cost: <code>Rate * Days</code>.
+              </p>
+              <form id="sp-charge-form" style="padding: 0;">
+                <div class="form-group">
+                  <label for="sp-veh-select">Select Vehicle *</label>
+                  <select id="sp-veh-select" required style="padding: 8px 12px; font-size: 0.85rem;"></select>
+                </div>
+                <div class="form-group">
+                  <label for="sp-days-input">Number of Days *</label>
+                  <input type="number" id="sp-days-input" value="5" min="1" required style="padding: 8px 12px; font-size: 0.85rem;">
+                </div>
+                <button type="submit" class="btn btn-primary btn-sm" style="width: 100%;">Execute CalculateRentalCharge</button>
+              </form>
+              <div id="sp-charge-output" class="playground-results hide" style="margin-top: 16px; padding: 12px; font-size: 0.85rem; font-family: monospace;">
+                <!-- Result card -->
+              </div>
+            </div>
+
+            <!-- SP 2 Button -->
+            <div class="chart-card">
+              <h3>SP 2: VehicleAvailabilityReport</h3>
+              <p class="description" style="font-size: 0.82rem; margin-bottom: 12px; color: var(--text-secondary);">
+                Generates a clean report of vehicle IDs, models, rates, and statuses.
+              </p>
+              <button id="run-sp-report-btn" class="btn btn-success btn-sm" style="width: 100%; margin-bottom: 16px;">Execute VehicleAvailabilityReport()</button>
+              
+              <div id="sp-report-output" class="playground-results hide" style="max-height: 200px; overflow-y: auto; padding: 12px;">
+                <div class="table-responsive">
+                  <table style="font-size: 0.8rem;">
+                    <thead>
+                      <tr><th>ID</th><th>Model</th><th>Type</th><th>Rate</th><th>Status</th></tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Academic Queries Section -->
+          <div class="table-container-card" style="margin-bottom: 24px;">
+            <div class="table-card-header">
+              <h3>Academic Analysis Queries (1 - 10)</h3>
+              <span class="console-label">Standard Queries Showcase</span>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 320px 1fr; border-top: 1px solid var(--border-color);">
+              
+              <!-- Query List -->
+              <div style="border-right: 1px solid var(--border-color); max-height: 400px; overflow-y: auto; padding: 8px; display: flex; flex-direction: column; gap: 4px;">
+                <button class="btn btn-secondary btn-sm query-list-btn active" data-qid="1" style="justify-content: flex-start;">1. Retrieve all vehicles</button>
+                <button class="btn btn-secondary btn-sm query-list-btn" data-qid="2" style="justify-content: flex-start;">2. Display available vehicles</button>
+                <button class="btn btn-secondary btn-sm query-list-btn" data-qid="3" style="justify-content: flex-start;">3. Customer & Rental details (2-Table JOIN)</button>
+                <button class="btn btn-secondary btn-sm query-list-btn" data-qid="4" style="justify-content: flex-start;">4. Customer, Vehicle, Rental (3-Table JOIN)</button>
+                <button class="btn btn-secondary btn-sm query-list-btn" data-qid="5" style="justify-content: flex-start;">5. Rentals per type (GROUP BY)</button>
+                <button class="btn btn-secondary btn-sm query-list-btn" data-qid="6" style="justify-content: flex-start;">6. Vehicle Types > 15 rentals (HAVING)</button>
+                <button class="btn btn-secondary btn-sm query-list-btn" data-qid="7" style="justify-content: flex-start;">7. Charge > Average charge (Subquery)</button>
+                <button class="btn btn-secondary btn-sm query-list-btn" data-qid="8" style="justify-content: flex-start;">8. Rented more than Customer #4</button>
+                <button class="btn btn-secondary btn-sm query-list-btn" data-qid="9" style="justify-content: flex-start;">9. All vehicles (LEFT JOIN)</button>
+                <button class="btn btn-secondary btn-sm query-list-btn" data-qid="10" style="justify-content: flex-start;">10. Vehicles never rented (NOT EXISTS)</button>
+              </div>
+
+              <!-- Query Executor Display -->
+              <div style="padding: 24px; display: flex; flex-direction: column; gap: 16px; max-height: 400px; overflow-y: auto;">
+                <div>
+                  <h4 id="active-query-title" style="margin-bottom: 4px; color: var(--accent-cyan);">Query 1: Retrieve all vehicles</h4>
+                  <p id="active-query-desc" style="font-size: 0.9rem; color: var(--text-secondary);">Retrieve all vehicle models, rates, and statuses from the database.</p>
+                </div>
+                <pre style="background-color: var(--bg-tertiary); padding: 12px; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid var(--border-color); overflow-x: auto;"><code id="active-query-sql">SELECT * FROM Vehicle;</code></pre>
+                <button id="execute-academic-query-btn" class="btn btn-primary btn-sm" style="align-self: flex-start;">Execute SQL Query</button>
+                
+                <div id="query-results-container" class="playground-results hide">
+                  <h4>Query Execution Results</h4>
+                  <div class="table-responsive">
+                    <table id="query-results-table" style="font-size: 0.85rem;">
+                      <thead></thead>
+                      <tbody></tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Live Database Logs -->
+          <div class="sql-logs-container">
+            <div class="logs-header">
+              <h3>Live SQLite Database Transaction Console</h3>
+              <span class="console-label">Query Logger</span>
+            </div>
+            <div class="logs-console" id="sql-logs-console">
+              <span class="console-line text-muted">Listening for SQL transactions...</span>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- ============================================================================
+  <!-- MODALS CONTAINER -->
+  <!-- ============================================================================ -->
+
+  <!-- CUSTOMER MODAL -->
+  <div id="customer-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="customer-modal-title">Register New Customer</h3>
+        <span class="close-btn" onclick="closeCustomerModal()">&times;</span>
+      </div>
+      <form id="customer-form">
+        <input type="hidden" id="cust-id">
+        <div class="form-group">
+          <label for="cust-name">Customer Name *</label>
+          <input type="text" id="cust-name" required placeholder="Rahul Sharma">
+        </div>
+        <div class="form-group">
+          <label for="cust-phone">Phone Number *</label>
+          <input type="text" id="cust-phone" required placeholder="9876543210">
+        </div>
+        <div class="form-group">
+          <label for="cust-email">Email Address *</label>
+          <input type="email" id="cust-email" required placeholder="rahul@gmail.com">
+        </div>
+        <div class="form-group">
+          <label for="cust-license">Driving License Number *</label>
+          <input type="text" id="cust-license" required placeholder="DL1001">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeCustomerModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Customer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- VEHICLE MODAL -->
+  <div id="vehicle-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="vehicle-modal-title">Add Vehicle</h3>
+        <span class="close-btn" onclick="closeVehicleModal()">&times;</span>
+      </div>
+      <form id="vehicle-form">
+        <input type="hidden" id="veh-id">
+        <div class="form-row">
+          <div class="form-group col">
+            <label for="veh-model">Vehicle Model *</label>
+            <input type="text" id="veh-model" required placeholder="Hyundai Creta">
+          </div>
+          <div class="form-group col">
+            <label for="veh-type">Vehicle Type *</label>
+            <input type="text" id="veh-type" required placeholder="SUV">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col">
+            <label for="veh-rate">Rental Rate (INR/day) *</label>
+            <input type="number" id="veh-rate" required min="1" placeholder="2500">
+          </div>
+          <div class="form-group col">
+            <label for="veh-status">Status</label>
+            <select id="veh-status">
+              <option value="Available">Available</option>
+              <option value="Rented">Rented</option>
+              <option value="Maintenance">Maintenance</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="veh-maint">Under Maintenance? (Yes/No)</label>
+          <select id="veh-maint">
+            <option value="No">No</option>
+            <option value="Yes">Yes</option>
+          </select>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeVehicleModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Vehicle</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- BOOKING MODAL -->
+  <div id="booking-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="booking-modal-title">Create Booking</h3>
+        <span class="close-btn" onclick="closeBookingModal()">&times;</span>
+      </div>
+      <form id="booking-form">
+        <div class="form-group">
+          <label for="book-customer">Customer *</label>
+          <select id="book-customer" required></select>
+        </div>
+        <div class="form-group">
+          <label for="book-vehicle">Vehicle Model *</label>
+          <select id="book-vehicle" required></select>
+        </div>
+        <div class="form-group">
+          <label for="book-date">Booking Date *</label>
+          <input type="date" id="book-date" required>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeBookingModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Create Booking</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- RENTAL MODAL -->
+  <div id="rental-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Create Rental Record</h3>
+        <span class="close-btn" onclick="closeRentalModal()">&times;</span>
+      </div>
+      <form id="rental-form">
+        <div class="form-group">
+          <label for="rental-booking">Select Linked Booking *</label>
+          <select id="rental-booking" required></select>
+        </div>
+        <div class="form-row">
+          <div class="form-group col">
+            <label for="rental-start">Start Date *</label>
+            <input type="date" id="rental-start" required>
+          </div>
+          <div class="form-group col">
+            <label for="rental-end">End Date *</label>
+            <input type="date" id="rental-end" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="rental-amount">Total Rental Amount (INR)</label>
+          <input type="number" id="rental-amount" placeholder="Automatically calculated" readonly>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeRentalModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Create Rental</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- PAYMENT RECORDING MODAL -->
+  <div id="payment-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Record Customer Payment</h3>
+        <span class="close-btn" onclick="closePaymentModal()">&times;</span>
+      </div>
+      <form id="payment-form">
+        <div class="form-group">
+          <label for="pay-rental">Select Rental ID *</label>
+          <select id="pay-rental" required></select>
+        </div>
+        <div class="form-row">
+          <div class="form-group col">
+            <label for="pay-amount">Amount (INR) *</label>
+            <input type="number" id="pay-amount" required min="1" placeholder="10000">
+          </div>
+          <div class="form-group col">
+            <label for="pay-method">Payment Method *</label>
+            <select id="pay-method" required>
+              <option value="UPI">UPI</option>
+              <option value="Card">Card</option>
+              <option value="Cash">Cash</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="pay-date">Payment Date *</label>
+          <input type="date" id="pay-date" required>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closePaymentModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Record Payment</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MAINTENANCE MODAL -->
+  <div id="maintenance-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Schedule Vehicle Maintenance</h3>
+        <span class="close-btn" onclick="closeMaintenanceModal()">&times;</span>
+      </div>
+      <form id="maintenance-form">
+        <div class="form-group">
+          <label for="maint-vehicle">Select Vehicle *</label>
+          <select id="maint-vehicle" required></select>
+        </div>
+        <div class="form-group">
+          <label for="maint-desc">Description *</label>
+          <input type="text" id="maint-desc" required placeholder="Engine Service">
+        </div>
+        <div class="form-row">
+          <div class="form-group col">
+            <label for="maint-date">Maintenance Date *</label>
+            <input type="date" id="maint-date" required>
+          </div>
+          <div class="form-group col">
+            <label for="maint-cost">Cost (INR) *</label>
+            <input type="number" id="maint-cost" required min="0" placeholder="5000">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeMaintenanceModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Schedule</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- CONFIRM DELETE DIALOG -->
+  <div id="confirm-modal" class="modal">
+    <div class="modal-content dialog-content">
+      <div class="modal-header header-danger">
+        <h3>Confirm Delete Record</h3>
+        <span class="close-btn" onclick="closeConfirmModal()">&times;</span>
+      </div>
+      <div class="modal-body py-4" style="padding: 24px;">
+        <p id="confirm-message">Are you absolutely sure you want to delete this record? This action cannot be undone.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeConfirmModal()">Cancel</button>
+        <button id="confirm-action-btn" class="btn btn-danger">Confirm Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATIONS CONTAINER -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Application JS -->
+  <script src="js/app.js"></script>
+</body>
+</html>

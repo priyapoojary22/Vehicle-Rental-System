@@ -1,0 +1,18 @@
+{
+  "name": "vehicle-rental-system",
+  "version": "1.0.0",
+  "description": "Professional Vehicle Rental Management System with modern dashboard",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "mysql2": "^3.22.5",
+    "sqlite3": "^5.1.7"
+  },
+  "author": "Antigravity",
+  "license": "MIT"
+}
